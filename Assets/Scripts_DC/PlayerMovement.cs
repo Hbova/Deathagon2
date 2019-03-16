@@ -7,23 +7,21 @@ public class PlayerMovement : MonoBehaviourPun, IPunObservable
 {
 	public float speed;
 
-	public Transform appearance;
+    public Transform appearance;
 	public Transform target;
+    
 	Vector3 lastSyncedPos;
 
 	void Update() {
 
 		// if this client owns this view, then control its movement using the input axes
 		if( photonView.IsMine ) {
-			float y = Input.GetAxis( "Vertical" ) * speed * Time.deltaTime;
-			float x = Input.GetAxis( "Horizontal" ) * speed * Time.deltaTime;
-
-			target.Translate( x, y, 0f );
+            
 
 			// keep the player within the world's bounds
-			if( !NetworkedObjects.find.world.bounds.Contains( target.position ) ) {
-				target.position = NetworkedObjects.find.world.bounds.ClosestPoint( target.position );
-			}
+			//if( !NetworkedObjects.find.world.bounds.Contains( target.position ) ) {
+				//target.position = NetworkedObjects.find.world.bounds.ClosestPoint( target.position );
+			//}
 
 			// move the renderer for this player immediately to its ideal position
 			appearance.position = target.position;
@@ -53,4 +51,6 @@ public class PlayerMovement : MonoBehaviourPun, IPunObservable
 			target.position = (Vector3)stream.ReceiveNext();
 		}
 	}
+
+    
 }

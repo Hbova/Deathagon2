@@ -19,11 +19,14 @@ public class PlayerProperties : MonoBehaviourPun
     {
         currentIncome = playerIncomes[order];
     }
-
+    [PunRPC]
     public void PayPlayers(int order)
     {
         currentWallet += Mathf.RoundToInt(playerIncomes[order]);
     }
-
+    [PunRPC]
     public void AddToIncome(int order,int amount)
+    {
+        playerIncomes[order] += amount;
+    }
 }

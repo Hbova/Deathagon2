@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: PhotonServerSettings
   m_EditorClassIdentifier: 
   AppSettings:
-    AppIdRealtime: 
+    AppIdRealtime: 6686f30e-dcfb-44c8-9912-723eb7322fdf
     AppIdChat: 
     AppIdVoice: 
     AppVersion: 
@@ -32,5 +32,8 @@ MonoBehaviour:
   - SetColor
   - SetRandomSeed
   - SpawnParticle
+  - SetIncome
+  - AddToIncome
+  - PayPlayers
   DisableAutoOpenWizard: 1
-  ShowSettings: 0
+  ShowSettings: 1

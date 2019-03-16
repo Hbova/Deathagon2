@@ -32,13 +32,7 @@ public class NetworkedObjectsH : MonoBehaviour
             seed = DateTime.Now.Millisecond + System.Threading.Thread.CurrentThread.GetHashCode();
         }
 
-        // when the game starts on this client, instantiate a player from a named prefab in the resources folder
-        //float xRange = UnityEngine.Random.Range(-world.bounds.extents.x, world.bounds.extents.x);
-        //float yRange = UnityEngine.Random.Range(-world.bounds.extents.x, world.bounds.extents.x);
-
-        //Vector3 spawnPos = world.bounds.center + new Vector3(xRange, yRange, 0f);
-
-        PhotonNetwork.Instantiate("Player", spawnPos[players.Count].position, Quaternion.identity, 0);
+        PhotonNetwork.Instantiate("Player", spawnPos[players.Count-1].position, Quaternion.identity, 0);
     }
 
     public void AddPlayer(PhotonView player)
