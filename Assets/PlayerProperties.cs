@@ -10,19 +10,8 @@ public class PlayerProperties : MonoBehaviourPun
 {
 
     public float[] playerIncomes;
+    public int currentWallet;
     public float currentIncome { get; set; }
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 
     [PunRPC]
     // synchronous assignment of income to the player from the "server"
@@ -30,4 +19,11 @@ public class PlayerProperties : MonoBehaviourPun
     {
         currentIncome = playerIncomes[order];
     }
+
+    public void PayPlayers(int order)
+    {
+        currentWallet += Mathf.RoundToInt(playerIncomes[order]);
+    }
+
+    public void AddToIncome(int order,int amount)
 }
