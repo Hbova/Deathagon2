@@ -17,12 +17,6 @@ public class PlayerMovement : MonoBehaviourPun, IPunObservable
 		// if this client owns this view, then control its movement using the input axes
 		if( photonView.IsMine ) {
             
-
-			// keep the player within the world's bounds
-			//if( !NetworkedObjects.find.world.bounds.Contains( target.position ) ) {
-				//target.position = NetworkedObjects.find.world.bounds.ClosestPoint( target.position );
-			//}
-
 			// move the renderer for this player immediately to its ideal position
 			appearance.position = target.position;
 		}
