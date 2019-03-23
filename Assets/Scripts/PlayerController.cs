@@ -8,11 +8,13 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
 {
     public UnityEngine.AI.NavMeshAgent agent;
 
-    public Transform playerCamera;
+    public Camera playerCamera;
 
     public Transform target;
 
     public Transform appearance;
+
+    public Transform NavMeshTarget;
 
     public float speed = 10;
 
@@ -24,25 +26,31 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
     {
         if (photonView.IsMine)
         {
-            
+            //playerCamera = GetComponentInChildren<Camera>();
+            //playerCamera.targetDisplay = NetworkedObjectsH.find.players.Count - 1;
+        }
+        else
+        {
+            GetComponentInChildren<Camera>().enabled = false;
         }
     }
 
     // Update is called once per frame
     void Update()
     {
+        
         if (photonView.IsMine)
         {
-            target.position = transform.position;
+            NavMeshTarget.position = target.position;
             RotateDestination(GetDestination());
-            agent.destination = target.position;
+            agent.destination = NavMeshTarget.position;
             if (Input.GetMouseButton(1))
             {
                 var mouseMovement = new Vector2(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y"));
 
                 var mouseSensitivityFactor = mouseSensitivityCurve.Evaluate(mouseMovement.magnitude);
 
-                playerCamera.eulerAngles -= new Vector3(mouseMovement.y * mouseSensitivityFactor, 0f, 0f);
+                playerCamera.transform.eulerAngles -= new Vector3(mouseMovement.y * mouseSensitivityFactor, 0f, 0f);
                 transform.eulerAngles += new Vector3(0f, mouseMovement.x * mouseSensitivityFactor, 0f);
             }
         }
@@ -57,20 +65,17 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
     public Vector3 GetDestination()
     {
         Vector3 direction = new Vector3(Input.GetAxis("Horizontal") * 10,0f, Input.GetAxis("Vertical") * 10);
-        float run;
-        if (Input.GetKey(KeyCode.LeftShift))
-        {
-            run = 2f;
-        }
-        else run = 1;
-        return direction * Time.deltaTime * 8 * run;
+        if (Input.GetKey(KeyCode.LeftShift)) agent.speed = 7f;
+        
+        else agent.speed = 3.5f;
+        return direction * Time.deltaTime * 8;
     }
 
     public void RotateDestination(Vector3 direction)
     {
         Vector3 rotatedTranslation = Quaternion.Euler(transform.eulerAngles.x, transform.eulerAngles.y, transform.eulerAngles.z) * direction;
 
-        target.transform.position += rotatedTranslation;
+        NavMeshTarget.transform.position += rotatedTranslation;
     }
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
@@ -92,5 +97,11 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
             // receive data from the stream in *the same order* in which it was originally serialized
             target.position = (Vector3)stream.ReceiveNext();
         }
+    }
+    [PunRPC]
+    public void SetPosition(Vector3 position)
+    {
+        transform.position = position;
+        agent.Warp(position);
     }
 }

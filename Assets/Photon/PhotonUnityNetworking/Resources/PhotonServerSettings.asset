@@ -35,5 +35,7 @@ MonoBehaviour:
   - SetIncome
   - AddToIncome
   - PayPlayers
+  - SetCamera
+  - SetPosition
   DisableAutoOpenWizard: 1
   ShowSettings: 1
