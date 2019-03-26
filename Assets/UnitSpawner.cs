@@ -4,6 +4,7 @@ using UnityEngine;
 using System;
 
 using Photon.Pun;
+using Photon.Realtime;
 
 public class UnitSpawner : MonoBehaviour
 {
@@ -35,16 +36,19 @@ public class UnitSpawner : MonoBehaviour
     public void SpawnCreeps(List<int> creeplist,int playerNumber)
     {
         int counter = 0;
-        if (creeplist.Count > 0)
+        if (playerNumber == NetworkedObjectsH.find.myPlayerNumber)
         {
-            for (int i = 0; i < creeplist.Count; i++)
+            if (creeplist.Count > 0)
             {
-                GameObject creepToSpawn = Instantiate(creepPrefabList[creeplist[i]]);
-                creepToSpawn.transform.position = GetCreepSpawn(arenaSpawns[playerNumber][counter].bounds);
-                creepToSpawn.GetComponent<Level1Enemy>().Destination = player.transform;
-                if (counter == 5) counter = 0;
-                else counter++;
+                for (int i = 0; i < creeplist.Count; i++)
+                {
+                    GameObject creepToSpawn = Instantiate(creepPrefabList[creeplist[i]]);
+                    creepToSpawn.transform.position = GetCreepSpawn(arenaSpawns[playerNumber][counter].bounds);
+                    creepToSpawn.GetComponent<Level1Enemy>().Destination = player.transform;
+                    if (counter == 5) counter = 0;
+                    else counter++;
+                }
             }
-        }   
+        }
     }
 }

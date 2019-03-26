@@ -32,7 +32,7 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
 
     public GameObject Bullet;
     private GameObject bullet;
-    public float playerBulletDamage = 25;
+    
 
     public AnimationCurve mouseSensitivityCurve = new AnimationCurve(new Keyframe(0f, 0.5f, 0f, 5f), new Keyframe(1f, 2.5f, 0f, 0f));
     // Start is called before the first frame update
@@ -72,9 +72,9 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
             if (Input.GetMouseButtonDown(0))
             {
                 bullet = Instantiate(Bullet);
-                bullet.transform.GetComponent<Bullet>().bulletDamage = playerBulletDamage;
+                bullet.transform.GetComponent<Bullet>().bulletDamage = GetComponent<PlayerProperties>().playerBulletDamage;
                 bullet.transform.position = transform.position + Vector3.up;
-                bullet.transform.eulerAngles = new Vector3(playerCamera.transform.eulerAngles.x, transform.eulerAngles.y, 0f);
+                bullet.transform.eulerAngles = new Vector3(playerCamera.transform.eulerAngles.x - 3, transform.eulerAngles.y, 0f);
             }
             if (Input.GetMouseButton(1))
             {
@@ -92,7 +92,7 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
             }
             incomeText.text = "Income: " + transform.GetComponent<PlayerProperties>().currentIncome;
             walletText.text = "Wallet: " + transform.GetComponent<PlayerProperties>().currentWallet;
-            waveTimer.text = NetworkedObjectsH.find.waveTimer + " seconds until next wave";
+            waveTimer.text = System.Math.Round(NetworkedObjectsH.find.waveTimer,2) + " seconds until next wave";
         }
         else
         {

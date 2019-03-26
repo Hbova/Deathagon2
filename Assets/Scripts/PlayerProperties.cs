@@ -11,6 +11,7 @@ public class PlayerProperties : MonoBehaviourPun
     public int playerNumber;
     public int currentWallet;
     public float currentIncome { get; set; }
+    public float playerBulletDamage = 25;
 
     public void KillEnemy(int worth)
     {
@@ -19,9 +20,9 @@ public class PlayerProperties : MonoBehaviourPun
 
     public void SpawnLevel1()
     {
+        NetworkedObjectsH.find.AddToCreepList(playerNumber, 1);
         if (photonView.IsMine)
         {
-            NetworkedObjectsH.find.AddToCreepList(playerNumber, 1);
             currentWallet -= 50;
             currentIncome += 20;
         }

@@ -4,6 +4,7 @@ using UnityEngine;
 using System;
 
 using Photon.Pun;
+using Photon.Realtime;
 
 
 public class NetworkedObjectsH : MonoBehaviour
