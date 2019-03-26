@@ -147,4 +147,22 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
         transform.position = position;
         agent.Warp(position);
     }
+
+    [PunRPC]
+    public void SpawnCreeps(List<int> creeplist, int playerNumb)
+    {
+        UnitSpawner.find.SpawnCreeps(creeplist, playerNumb);
+    }
+
+    [PunRPC]
+    public void AddToMasterCreepList(int playerNumb, int creep)
+    {
+        NetworkedObjectsH.find.AddToMasterCreepList(playerNumb, creep);
+    }
+
+    [PunRPC]
+    public void SyncWaveTimer(int timer)
+    {
+        NetworkedObjectsH.find.SyncWaveTimer(timer);
+    }
 }

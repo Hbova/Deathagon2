@@ -49,15 +49,16 @@ public class NetworkedObjectsH : MonoBehaviour
                 for(int i = 0; i < players.Count; i++)
                 {
                     players[i].RPC("PayPlayers", RpcTarget.All);
-                    if (i == 0) UnitSpawner.find.SpawnCreeps(creepList[players.Count - 1],i);
-                    else UnitSpawner.find.SpawnCreeps(creepList[i], i);
+                    players[i].RPC("SyncWaveTimer", RpcTarget.All,30);
+                    if (i == 0) players[i].RPC("SpawnCreeps", RpcTarget.All, creepList[players.Count - 1], i);
+                    else if (i == players.Count - 1) players[players.Count - 1].RPC("SpawnCreeps", RpcTarget.All, creepList[i - 1], i);
+                    else players[i].RPC("SpawnCreeps", RpcTarget.All, creepList[i - 1], i);
                 }
                 for (int i = 0; i < creepList.Count; i++)
                 {
                     creepList[i].Clear();
                 }
                 waveNumber += 1;
-                waveTimer = 30;
             }
             
         }
@@ -70,6 +71,7 @@ public class NetworkedObjectsH : MonoBehaviour
         players.Add(player);
         players[players.Count - 1].GetComponent<PlayerProperties>().playerNumber = myPlayerNumber;
         creepList.Add(new List<int>());
+        Debug.Log(myPlayerNumber);
 
         // only the "server" has authority over which color the player should be and its seed
         if (PhotonNetwork.IsMasterClient)
@@ -88,6 +90,16 @@ public class NetworkedObjectsH : MonoBehaviour
 
     public void AddToCreepList(int playerNumber,int creep)
     {
-        creepList[playerNumber].Add(creep);
+        players[0].RPC("AddToMasterCreepList", RpcTarget.All, playerNumber, creep);
+    }
+
+    public void AddToMasterCreepList(int playerNumber,int creep)
+    {
+        if (PhotonNetwork.IsMasterClient) creepList[playerNumber].Add(creep);
+    }
+
+    public void SyncWaveTimer(int timer)
+    {
+        waveTimer = timer;
     }
 }

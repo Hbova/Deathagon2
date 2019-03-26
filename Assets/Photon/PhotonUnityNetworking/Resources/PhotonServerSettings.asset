@@ -38,5 +38,7 @@ MonoBehaviour:
   - SetCamera
   - SetPosition
   - SpawnCreeps
+  - SyncWaveTimer
+  - AddToMasterCreepList
   DisableAutoOpenWizard: 1
   ShowSettings: 1

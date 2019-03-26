@@ -36,18 +36,15 @@ public class UnitSpawner : MonoBehaviour
     public void SpawnCreeps(List<int> creeplist,int playerNumber)
     {
         int counter = 0;
-        if (playerNumber == NetworkedObjectsH.find.myPlayerNumber)
+        if (playerNumber == NetworkedObjectsH.find.myPlayerNumber && creeplist.Count > 0)
         {
-            if (creeplist.Count > 0)
+            for (int i = 0; i < creeplist.Count; i++)
             {
-                for (int i = 0; i < creeplist.Count; i++)
-                {
-                    GameObject creepToSpawn = Instantiate(creepPrefabList[creeplist[i]]);
-                    creepToSpawn.transform.position = GetCreepSpawn(arenaSpawns[playerNumber][counter].bounds);
-                    creepToSpawn.GetComponent<Level1Enemy>().Destination = player.transform;
-                    if (counter == 5) counter = 0;
-                    else counter++;
-                }
+                GameObject creepToSpawn = Instantiate(creepPrefabList[creeplist[i]-1]);
+                creepToSpawn.transform.position = GetCreepSpawn(arenaSpawns[playerNumber][counter].bounds);
+                creepToSpawn.GetComponent<Level1Enemy>().SetDestination(player.transform);
+                if (counter == 4) counter = 0;
+                else counter++;
             }
         }
     }

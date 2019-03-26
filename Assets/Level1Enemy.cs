@@ -9,7 +9,7 @@ public class Level1Enemy : MonoBehaviour
     public Transform Destination;
 
     public float HitPoints = 50;
-
+    
     // Update is called once per frame
     void Update()
     {
@@ -26,8 +26,9 @@ public class Level1Enemy : MonoBehaviour
         Destination = destination;
     }
 
-    private void OnCollisionEnter(Collision collision)
+    void OnCollisionEnter(Collision collision)
     {
+        Debug.Log("HIT!!");
         HitPoints -= collision.transform.GetComponent<Bullet>().bulletDamage;
     }
 }

@@ -20,12 +20,15 @@ public class PlayerProperties : MonoBehaviourPun
 
     public void SpawnLevel1()
     {
-        NetworkedObjectsH.find.AddToCreepList(playerNumber, 1);
-        if (photonView.IsMine)
+        if (currentWallet >= 50)
         {
-            currentWallet -= 50;
-            currentIncome += 20;
-        }
+            NetworkedObjectsH.find.AddToCreepList(playerNumber, 1);
+            if (photonView.IsMine)
+            {
+                currentWallet -= 50;
+                currentIncome += 20;
+            }
+        } 
     }
 
     [PunRPC]
