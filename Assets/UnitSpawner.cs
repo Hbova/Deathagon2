@@ -18,7 +18,7 @@ public class UnitSpawner : MonoBehaviour
     public List<BoxCollider> unitSpawnsSix;
     public List<BoxCollider> unitSpawnsSeven;
     public List<BoxCollider> unitSpawnsEight;
-    public List<List<BoxCollider>> arenaSpawns;
+    public List<List<BoxCollider>> arenaSpawns = new List<List<BoxCollider>>();
 
     public static UnitSpawner find;
     // singleton assignment
@@ -26,37 +26,25 @@ public class UnitSpawner : MonoBehaviour
     {
         find = this;
     }
-    
-    // Start is called before the first frame update
-    void Start()
-    {
-        arenaSpawns.Add(unitSpawnsOne);
-        arenaSpawns.Add(unitSpawnsTwo);
-        arenaSpawns.Add(unitSpawnsThree);
-        arenaSpawns.Add(unitSpawnsFour);
-        arenaSpawns.Add(unitSpawnsFive);
-        arenaSpawns.Add(unitSpawnsSix);
-        arenaSpawns.Add(unitSpawnsSeven);
-        arenaSpawns.Add(unitSpawnsEight);
-    }
 
     public Vector3 GetCreepSpawn(Bounds spawnBounds)
     {
         return new Vector3(UnityEngine.Random.Range(spawnBounds.min.x, spawnBounds.max.x), UnityEngine.Random.Range(spawnBounds.min.y, spawnBounds.max.y), UnityEngine.Random.Range(spawnBounds.min.z, spawnBounds.max.z));
     }
 
-    [PunRPC]
     public void SpawnCreeps(List<int> creeplist,int playerNumber)
     {
         int counter = 0;
-        for (int i = 0; i < arenaSpawns[playerNumber].Count; i++)
+        if (creeplist.Count > 0)
         {
-            GameObject creepToSpawn = Instantiate(creepPrefabList[creeplist[i]]);
-            creepToSpawn.transform.position = GetCreepSpawn(arenaSpawns[playerNumber][counter].bounds);
-            creepToSpawn.GetComponent<Level1Enemy>().Destination = player.transform;
-
-            if (counter == 5) counter = 0;
-            else counter++;
-        }
+            for (int i = 0; i < creeplist.Count; i++)
+            {
+                GameObject creepToSpawn = Instantiate(creepPrefabList[creeplist[i]]);
+                creepToSpawn.transform.position = GetCreepSpawn(arenaSpawns[playerNumber][counter].bounds);
+                creepToSpawn.GetComponent<Level1Enemy>().Destination = player.transform;
+                if (counter == 5) counter = 0;
+                else counter++;
+            }
+        }   
     }
 }

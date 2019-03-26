@@ -5,17 +5,18 @@ using System;
 
 using Photon.Pun;
 
+
 public class NetworkedObjectsH : MonoBehaviour
 {
     public Transform[] spawnPos = new Transform[8];
 
     public List<PhotonView> players = new List<PhotonView>();
-    public List<List<int>> creepList;
+    public List<List<int>> creepList = new List<List<int>>();
 
     public int myPlayerNumber;
 
     public int waveNumber = 0;
-    public float waveTimer = 30;
+    public float waveTimer = 5;
 
     public static NetworkedObjectsH find;
 
@@ -47,14 +48,17 @@ public class NetworkedObjectsH : MonoBehaviour
                 for(int i = 0; i < players.Count; i++)
                 {
                     players[i].RPC("PayPlayers", RpcTarget.All);
-                    players[i].RPC("SpawnCreeps", RpcTarget.All,creepList[i],i);
+                    if (i == 0) UnitSpawner.find.SpawnCreeps(creepList[players.Count - 1],i);
+                    else UnitSpawner.find.SpawnCreeps(creepList[i], i);
                 }
                 for (int i = 0; i < creepList.Count; i++)
                 {
                     creepList[i].Clear();
                 }
+                waveNumber += 1;
                 waveTimer = 30;
             }
+            
         }
     }
 
@@ -62,10 +66,9 @@ public class NetworkedObjectsH : MonoBehaviour
     {
         // add a player to the list of all tracked players
         myPlayerNumber = players.Count;
-        player.GetComponent<PlayerProperties>().playerNumber = players.Count;
         players.Add(player);
+        players[players.Count - 1].GetComponent<PlayerProperties>().playerNumber = myPlayerNumber;
         creepList.Add(new List<int>());
-        UnitSpawner.find.player = player.transform;
 
         // only the "server" has authority over which color the player should be and its seed
         if (PhotonNetwork.IsMasterClient)

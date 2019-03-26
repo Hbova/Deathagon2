@@ -10,6 +10,7 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
     public Text playerNumberText;
     public Text incomeText;
     public Text walletText;
+    public Text waveTimer;
 
     public Button LevelOne;
     
@@ -42,6 +43,15 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
             transform.GetComponent<PlayerProperties>().currentIncome = 200;
             transform.GetComponent<PlayerProperties>().currentWallet = 200;
             playerNumberText.text = "Player: " + playerNumber + 1;
+            UnitSpawner.find.player = transform;
+            UnitSpawner.find.arenaSpawns.Add(UnitSpawner.find.unitSpawnsOne);
+            UnitSpawner.find.arenaSpawns.Add(UnitSpawner.find.unitSpawnsTwo);
+            UnitSpawner.find.arenaSpawns.Add(UnitSpawner.find.unitSpawnsThree);
+            UnitSpawner.find.arenaSpawns.Add(UnitSpawner.find.unitSpawnsFour);
+            UnitSpawner.find.arenaSpawns.Add(UnitSpawner.find.unitSpawnsFive);
+            UnitSpawner.find.arenaSpawns.Add(UnitSpawner.find.unitSpawnsSix);
+            UnitSpawner.find.arenaSpawns.Add(UnitSpawner.find.unitSpawnsSeven);
+            UnitSpawner.find.arenaSpawns.Add(UnitSpawner.find.unitSpawnsEight);
         }
         else
         {
@@ -77,11 +87,12 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
             }
             if (Input.GetKeyDown(KeyCode.Q))
             {
-                if (LevelOne.enabled == false) LevelOne.enabled = true;
-                else LevelOne.enabled = false;
+                if (LevelOne.gameObject.activeInHierarchy == false) LevelOne.gameObject.SetActive(true);
+                else LevelOne.gameObject.SetActive(false);
             }
             incomeText.text = "Income: " + transform.GetComponent<PlayerProperties>().currentIncome;
             walletText.text = "Wallet: " + transform.GetComponent<PlayerProperties>().currentWallet;
+            waveTimer.text = NetworkedObjectsH.find.waveTimer + " seconds until next wave";
         }
         else
         {
