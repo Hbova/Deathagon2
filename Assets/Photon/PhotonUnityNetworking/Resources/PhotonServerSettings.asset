@@ -37,5 +37,6 @@ MonoBehaviour:
   - PayPlayers
   - SetCamera
   - SetPosition
+  - SpawnCreeps
   DisableAutoOpenWizard: 1
   ShowSettings: 1

@@ -8,25 +8,25 @@ using Photon.Realtime;
 
 public class PlayerProperties : MonoBehaviourPun
 {
-
-    public float[] playerIncomes;
+    public int playerNumber;
     public int currentWallet;
     public float currentIncome { get; set; }
 
-    [PunRPC]
-    // synchronous assignment of income to the player from the "server"
-    public void SetIncome(int order)
+    public void KillEnemy(int worth)
     {
-        currentIncome = playerIncomes[order];
+        currentWallet += worth;
     }
-    [PunRPC]
-    public void PayPlayers(int order)
+
+    public void SpawnLevel1()
     {
-        currentWallet += Mathf.RoundToInt(playerIncomes[order]);
+        NetworkedObjectsH.find.AddToCreepList(playerNumber, 1);
+        currentWallet -= 50;
+        currentIncome += 20;
     }
+
     [PunRPC]
-    public void AddToIncome(int order,int amount)
+    public void PayPlayers()
     {
-        playerIncomes[order] += amount;
+        currentWallet += Mathf.RoundToInt(currentIncome);
     }
 }
