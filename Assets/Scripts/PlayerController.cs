@@ -149,9 +149,9 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
     }
 
     [PunRPC]
-    public void SpawnCreeps(List<int> creeplist, int playerNumb)
+    public void SpawnCreeps(string creepListJson, int playerNumb)
     {
-        UnitSpawner.find.SpawnCreeps(creeplist, playerNumb);
+        UnitSpawner.find.SpawnCreeps( CreepList.CreepsToSpawnFromJson(creepListJson), playerNumb);
     }
 
     [PunRPC]

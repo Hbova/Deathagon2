@@ -16,7 +16,7 @@ public class Level1Enemy : MonoBehaviour
         agent.destination = Destination.position;
         if (HitPoints <= 0)
         {
-            agent.transform.GetComponent<PlayerProperties>().KillEnemy(10);
+            Destination.GetComponent<PlayerProperties>().KillEnemy(10);
             Destroy(this.gameObject);
         }
     }
@@ -26,9 +26,13 @@ public class Level1Enemy : MonoBehaviour
         Destination = destination;
     }
 
-    void OnCollisionEnter(Collision collision)
+    void OnTriggerEnter(Collider col)
     {
         Debug.Log("HIT!!");
-        HitPoints -= collision.transform.GetComponent<Bullet>().bulletDamage;
+        Bullet bullet = col.transform.GetComponent<Bullet>();
+
+        if( bullet ) {
+            HitPoints -= bullet.bulletDamage;
+        }
     }
 }

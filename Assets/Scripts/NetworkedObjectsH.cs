@@ -50,9 +50,10 @@ public class NetworkedObjectsH : MonoBehaviour
                 {
                     players[i].RPC("PayPlayers", RpcTarget.All);
                     players[i].RPC("SyncWaveTimer", RpcTarget.All,30);
-                    if (i == 0) players[i].RPC("SpawnCreeps", RpcTarget.All, creepList[players.Count - 1], i);
-                    else if (i == players.Count - 1) players[players.Count - 1].RPC("SpawnCreeps", RpcTarget.All, creepList[i - 1], i);
-                    else players[i].RPC("SpawnCreeps", RpcTarget.All, creepList[i - 1], i);
+
+                    if (i == 0) players[i].RPC("SpawnCreeps", RpcTarget.All, CreepList.MakeCreepListJson(creepList[players.Count - 1]), i);
+                    else if (i == players.Count - 1) players[players.Count - 1].RPC("SpawnCreeps", RpcTarget.All, CreepList.MakeCreepListJson(creepList[i - 1]), i);
+                    else players[i].RPC("SpawnCreeps", RpcTarget.All, CreepList.MakeCreepListJson(creepList[i - 1]), i);
                 }
                 for (int i = 0; i < creepList.Count; i++)
                 {
@@ -63,6 +64,8 @@ public class NetworkedObjectsH : MonoBehaviour
             
         }
     }
+
+    
 
     public void AddPlayer(PhotonView player)
     {
